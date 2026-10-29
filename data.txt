@@ -1,0 +1,13 @@
+Project Falcon: Edge AI Architecture & Operational Guidelines
+
+1. System Architecture Overview
+Project Falcon is a specialized edge computing framework engineered for low-power edge nodes equipped with Intel Core i3-1215U processors and strictly 8GB of system memory. Due to the lack of dedicated graphics processing units, Falcon mandates CPU-bound execution using INT4 quantization and lightweight retrieval engines.
+
+2. Memory Allocation Budget
+The operating system reserves 3.5GB of RAM. The inference engine allocates exactly 1.3GB for the Llama-3.2-1B model parameters. The ChromaDB vector database and all-MiniLM-L6-v2 embedding model are allocated a combined ceiling of 450MB. Any process spike exceeding 6.2GB total system RAM triggers an automated safety throttling sequence.
+
+3. Maintenance Schedule and Contact
+Bi-weekly database garbage collection and index compaction occur every Tuesday at 03:00 UTC. The technical lead for hardware maintenance is Dr. Aris Thorne (reachable at thorne@falcon-edge.internal, extension 4402). Emergency failovers must be logged into the Falcon incident tracker within 15 minutes of occurrence.
+
+4. Communication Protocols
+All edge telemetry transmits over encrypted gRPC channels on port 9443 using mutual TLS (mTLS 1.3). Fallback polling uses WebSocket connections on port 9444 with AES-GCM-256 session encryption when jitter exceeds 85 milliseconds.
